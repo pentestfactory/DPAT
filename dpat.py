@@ -8,6 +8,7 @@ import argparse
 import sqlite3
 import sys
 import csv
+
 from shutil import copyfile
 try:
     import html as htmllib
@@ -445,15 +446,19 @@ summary_table.append((None, "Top Password Use Stats",
 
 # Password Reuse Statistics (based only on NT hash)
 c.execute('SELECT nt_hash, COUNT(nt_hash) as count, password FROM hash_infos WHERE nt_hash is not "31d6cfe0d16ae931b73c59d7e0c089c0" AND history_index = -1 GROUP BY nt_hash ORDER BY count DESC LIMIT 20')
+data=c.execute('SELECT nt_hash, COUNT(nt_hash) as count, password FROM hash_infos WHERE nt_hash is not "31d6cfe0d16ae931b73c59d7e0c089c0" AND history_index = -1 GROUP BY nt_hash ORDER BY count DESC LIMIT 20')
 list = c.fetchall()
+#
+print list
 
-with open('stats-password-reuse.csv', 'w') as csvfile:
-    fieldnames = ['Hash', 'Count','Password']
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    writer.writeheader()
-    for row in c.execute('SELECT password,COUNT(password) as count FROM hash_infos WHERE password is not NULL AND history_index = -1 and password is not "" GROUP BY password ORDER BY count DESC LIMIT 20'):
-        writeRow = ";".join(row)
-        csvfile.write(writeRow)
+
+with open('output-reuse.csv', 'wb') as f:
+    writer = csv.writer(f)
+    writer.writerow(['NT Hash', 'Count', 'Passwords'])
+    for record in list:
+        writer.writerow(record)
+
+
 
 
 counter = 0
