@@ -449,7 +449,7 @@ c.execute('SELECT nt_hash, COUNT(nt_hash) as count, password FROM hash_infos WHE
 data=c.execute('SELECT nt_hash, COUNT(nt_hash) as count, password FROM hash_infos WHERE nt_hash is not "31d6cfe0d16ae931b73c59d7e0c089c0" AND history_index = -1 GROUP BY nt_hash ORDER BY count DESC LIMIT 20')
 list = c.fetchall()
 
-with open('output-reuse.csv', 'wb') as f:
+with open('stats-reuse.csv', 'wb') as f:
     writer = csv.writer(f)
     writer.writerow(['NT Hash', 'Count', 'Passwords'])
     for record in list:
