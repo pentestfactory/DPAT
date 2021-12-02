@@ -7,6 +7,7 @@ import re
 import argparse
 import sqlite3
 import sys
+import csv
 from shutil import copyfile
 try:
     import html as htmllib
