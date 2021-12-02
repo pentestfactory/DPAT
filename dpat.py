@@ -526,18 +526,3 @@ try:
     input = raw_input
 except NameError:
     pass
-
-# prompt user to open the report
-# the code to prompt user to open the file was borrowed from the EyeWitness tool https://github.com/ChrisTruncer/EyeWitness
-print('Would you like to open the report now? [Y/n]')
-while True:
-    try:
-        response = input().lower().rstrip('\r')
-        if ((response == "") or (strtobool(response))):
-            webbrowser.open(os.path.join("file://" + os.getcwd(),
-                                         folder_for_html_report, filename_for_html_report))
-            break
-        else:
-            break
-    except ValueError:
-        print("Please respond with y or n")
